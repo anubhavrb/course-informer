@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
     public void requestClicked() {
         if (checkInputs()) {
             tvInfo.setText("Retrieving...");
-            String dep = etDep.getText().toString().toLowerCase();
-            String num = etNum.getText().toString();
+            String dep = etDep.getText().toString().toLowerCase().trim();
+            String num = etNum.getText().toString().trim();
             String URL = "http://www.davidson.edu/offices/registrar/schedules-and-courses/fall-2017-courses/"
                         + dep + "-fall-2017-courses";
             (new ParseAsyncTask(MainActivity.this)).execute(new String[]{URL, num});
@@ -76,8 +76,6 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
 
     public void resultArrived(String result) {
         tvInfo.setText(result);
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage("7047779769", null, result.substring(0, 20), null, null);
     }
 
     private boolean checkInputs() {
