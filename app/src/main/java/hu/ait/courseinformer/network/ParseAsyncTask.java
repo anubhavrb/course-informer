@@ -9,11 +9,11 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class ParseURL extends AsyncTask<String, Void, String> {
+public class ParseAsyncTask extends AsyncTask<String, Void, String> {
 
     private ResultListener resultListener;
 
-    public ParseURL(ResultListener resultListener) {
+    public ParseAsyncTask(ResultListener resultListener) {
         this.resultListener = resultListener;
     }
 
