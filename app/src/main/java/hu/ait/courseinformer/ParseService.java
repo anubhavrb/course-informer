@@ -43,7 +43,7 @@ public class ParseService extends Service {
                     }
                 });
                 try {
-                    sleep(20000);
+                    sleep(180000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -68,7 +68,6 @@ public class ParseService extends Service {
             enabled = true;
             new ParseTimerThread().start();
         }
-
         return START_STICKY;
     }
 
