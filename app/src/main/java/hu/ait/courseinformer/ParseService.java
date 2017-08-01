@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.telephony.SmsManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import hu.ait.courseinformer.network.ParseAsyncSMSTask;
 import hu.ait.courseinformer.network.ResultListener;
@@ -20,7 +19,7 @@ public class ParseService extends Service {
     }
 
     private boolean enabled = false;
-    private String[] courses = {""}
+    private String[] courses = {"MAT 10388", "PHY 15460"};
 
     public class ParseTimerThread extends Thread implements ResultListener {
 
@@ -32,12 +31,19 @@ public class ParseService extends Service {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        String URL = "http://www.davidson.edu/offices/registrar/schedules-and-courses/fall-2017-courses/csc-fall-2017-courses";
-                        (new ParseAsyncSMSTask(ParseTimerThread.this)).execute(new String[]{URL, "15188"});
+                        for (int i = 0; i < courses.length; i++) {
+                            String[] course = courses[i].split(" ");
+                            String dep = course[0].toLowerCase().trim();
+                            String crn = course[1].trim();
+
+                            String URL = "http://www.davidson.edu/offices/registrar/schedules-and-courses/fall-2017-courses/"
+                                    + dep + "-fall-2017-courses";
+                            (new ParseAsyncSMSTask(ParseTimerThread.this)).execute(new String[]{URL, crn});
+                        }
                     }
                 });
                 try {
-                    sleep(10000);
+                    sleep(20000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
