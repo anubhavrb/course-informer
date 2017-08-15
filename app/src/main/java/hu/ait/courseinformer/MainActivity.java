@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.view_courses:
+                startActivity(new Intent(MainActivity.this, CoursesActivity.class));
                 break;
 
             case R.id.add_course:
