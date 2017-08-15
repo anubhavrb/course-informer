@@ -76,6 +76,10 @@ public class CoursesActivity extends AppCompatActivity {
                 showAddDialog();
                 break;
 
+            case R.id.delete_all:
+                adapter.deleteAll();
+                break;
+
             default:
                 break;
         }

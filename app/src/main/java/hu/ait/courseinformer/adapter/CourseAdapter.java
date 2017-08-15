@@ -30,12 +30,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
 
         courseList = new ArrayList<>();
 
-        /*for (int i = 0; i < courseResults.size(); i++) {
+        for (int i = 0; i < courseResults.size(); i++) {
             courseList.add(courseResults.get(i));
-        }*/
-
-        for (int i = 0; i < 5; i++) {
-            courseList.add(new Course("CSC", "10000"));
         }
     }
 
@@ -62,8 +58,25 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
     public void addCourse(String name) {
         String dep = name.split(" ")[0];
         String crn = name.split(" ")[1];
-        Course course = new Course(dep, crn);
+
+        realmCourse.beginTransaction();
+        Course course = realmCourse.createObject(Course.class);
+        course.setDep(dep);
+        course.setCrn(crn);
+        realmCourse.commitTransaction();
+
         courseList.add(course);
+        notifyItemInserted(courseList.size()-1);
+    }
+
+    public void deleteAll() {
+
+        realmCourse.beginTransaction();
+        realmCourse.deleteAll();
+        realmCourse.commitTransaction();
+
+        courseList.clear();
+        notifyDataSetChanged();
     }
 
     public void closeRealm() {

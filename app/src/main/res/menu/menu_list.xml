@@ -5,4 +5,8 @@
         android:title="Add Course"
         android:id="@+id/add_course"/>
 
+    <item
+        android:title="Delete All"
+        android:id="@+id/delete_all"/>
+
 </menu>
