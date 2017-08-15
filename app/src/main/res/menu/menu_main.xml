@@ -7,10 +7,6 @@
         android:id="@+id/view_courses"/>
 
     <item
-        android:title="Add Course"
-        android:id="@+id/add_course"/>
-
-    <item
         android:title="Update number"
         android:id="@+id/add_number"/>
 

@@ -34,7 +34,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
             courseList.add(courseResults.get(i));
         }*/
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 5; i++) {
             courseList.add(new Course("CSC", "10000"));
         }
     }
@@ -57,6 +57,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return courseList.size();
+    }
+
+    public void addCourse(String name) {
+        String dep = name.split(" ")[0];
+        String crn = name.split(" ")[1];
+        Course course = new Course(dep, crn);
+        courseList.add(course);
     }
 
     public void closeRealm() {
