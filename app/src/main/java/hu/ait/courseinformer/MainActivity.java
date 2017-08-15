@@ -1,7 +1,6 @@
 package hu.ait.courseinformer;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -9,9 +8,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.SmsManager;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,6 +25,9 @@ import hu.ait.courseinformer.network.ParseAsyncTask;
 import hu.ait.courseinformer.network.ResultListener;
 
 public class MainActivity extends AppCompatActivity implements ResultListener {
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.etDep)
     EditText etDep;
@@ -44,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
 
         requestPermissions();
     }
@@ -113,5 +119,30 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
                             .show();
                 }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.view_courses:
+                break;
+            
+            case R.id.add_course:
+                break;
+
+            case R.id.add_number:
+                break;
+
+            default:
+                break;
+        }
+
+        return true;
     }
 }
