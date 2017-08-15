@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
         switch(item.getItemId()) {
             case R.id.view_courses:
                 break;
-            
+
             case R.id.add_course:
                 break;
 
