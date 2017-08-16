@@ -37,8 +37,12 @@ public class ParseAsyncTask extends AsyncTask<String, Void, String> {
                 if (row.select("td.course").text().equals(num)) {
                     match = true;
                     int rem = Integer.parseInt(row.select("td.remaining").text());
-                    result += row.select("td.title").text() + " " + row.select("td.section").text()
-                                + " - " + rem + " seats left!\n";
+                    String title = row.select("td.title").text();
+                    String section = row.select("td.section").text();
+                    result += title;
+                    if (!section.equals("0"))
+                        result += " " + section;
+                    result += " - " + rem + " spots open!\n";
                 }
             }
             if (!match) {

@@ -77,16 +77,21 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
 
     @OnClick(R.id.btnStart)
     public void startClicked() {
-        Log.d("LOG_TAG", "Inside start btn");
-        Intent intentStart = new Intent(MainActivity.this, ParseService.class);
-        startService(intentStart);
+        if (getSharedPreferences(PREFS_NAME, 0).contains(PHONE_NUM)) {
+            Intent intentStart = new Intent(MainActivity.this, ParseService.class);
+            startService(intentStart);
+            Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "Add a phone number first", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.btnStop)
     public void stopClicked() {
-        Log.d("LOG_TAG", "Inside stop btn");
         Intent intentStop = new Intent(MainActivity.this, ParseService.class);
         stopService(intentStop);
+        Toast.makeText(this, "Service stopped", Toast.LENGTH_SHORT).show();
     }
 
     public void resultArrived(String result) {
