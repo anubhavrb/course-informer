@@ -138,12 +138,8 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
     private void checkFirstTime() {
         SharedPreferences info = getSharedPreferences(PREFS_NAME, 0);
         if (info.getBoolean(FIRST_TIME, true)) {
-            Toast.makeText(this, "First time!", Toast.LENGTH_SHORT).show();
             showPhoneDialog();
             info.edit().putBoolean(FIRST_TIME, false).commit();
-        }
-        else {
-            Toast.makeText(this, "Not the first time", Toast.LENGTH_SHORT).show();
         }
     }
 
