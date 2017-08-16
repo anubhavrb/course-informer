@@ -37,9 +37,13 @@ public class ParseAsyncSMSTask extends AsyncTask<String, Void, String> {
                 if (row.select("td.creditNumber").text().equals(crn)) {
                     int rem = Integer.parseInt(row.select("td.remaining").text());
                     if (rem > 0) {
-                        result = row.select("td.title").text() + " " + row.select("td.section").text() +
-                                "(" +  row.select("td.creditNumber").text() + ")" + " has " + rem +
-                                " seats open!";
+                        String title = row.select("td.title").text();
+                        String section = row.select("td.section").text();
+                        String creditNumber = row.select("td.creditNumber").text();
+                        result = title + " ";
+                        if (!section.equals("0"))
+                            result += section;
+                        result += "(" + creditNumber + ")" + " has " + rem + " spots open!";
                         break;
                     }
                 }

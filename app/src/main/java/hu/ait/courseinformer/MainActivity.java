@@ -1,17 +1,21 @@
 package hu.ait.courseinformer;
 
 import android.Manifest;
-import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.SmsManager;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,6 +28,13 @@ import hu.ait.courseinformer.network.ParseAsyncTask;
 import hu.ait.courseinformer.network.ResultListener;
 
 public class MainActivity extends AppCompatActivity implements ResultListener {
+
+    private final String PREFS_NAME = "MyPrefs";
+    private final String FIRST_TIME = "FIRST_TIME";
+    private final String PHONE_NUM = "PHONE_NUM";
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @BindView(R.id.etDep)
     EditText etDep;
@@ -45,7 +56,11 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
 
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
+
         requestPermissions();
+
+        checkFirstTime();
     }
 
     @OnClick(R.id.btnRequest)
@@ -62,16 +77,21 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
 
     @OnClick(R.id.btnStart)
     public void startClicked() {
-        Log.d("LOG_TAG", "Inside start btn");
-        Intent intentStart = new Intent(MainActivity.this, ParseService.class);
-        startService(intentStart);
+        if (getSharedPreferences(PREFS_NAME, 0).contains(PHONE_NUM)) {
+            Intent intentStart = new Intent(MainActivity.this, ParseService.class);
+            startService(intentStart);
+            Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "Add a phone number first", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.btnStop)
     public void stopClicked() {
-        Log.d("LOG_TAG", "Inside stop btn");
         Intent intentStop = new Intent(MainActivity.this, ParseService.class);
         stopService(intentStop);
+        Toast.makeText(this, "Service stopped", Toast.LENGTH_SHORT).show();
     }
 
     public void resultArrived(String result) {
@@ -113,5 +133,62 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
                             .show();
                 }
         }
+    }
+
+    private void checkFirstTime() {
+        SharedPreferences info = getSharedPreferences(PREFS_NAME, 0);
+        if (info.getBoolean(FIRST_TIME, true)) {
+            showPhoneDialog();
+            info.edit().putBoolean(FIRST_TIME, false).commit();
+        }
+    }
+
+    private void showPhoneDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        final EditText etNumber = new EditText(MainActivity.this);
+        builder.setTitle("Add Phone Number")
+                .setView(etNumber)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!TextUtils.isEmpty(etNumber.getText())) {
+                            SharedPreferences info = getSharedPreferences(PREFS_NAME, 0);
+                            info.edit().putString(PHONE_NUM, etNumber.getText().toString().trim())
+                                    .commit();
+                        }
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.view_courses:
+                startActivity(new Intent(MainActivity.this, CoursesActivity.class));
+                break;
+
+            case R.id.add_course:
+                break;
+
+            case R.id.add_number:
+                SharedPreferences info = getSharedPreferences(PREFS_NAME, 0);
+                if (info.contains(PHONE_NUM)) {
+                    Toast.makeText(this, info.getString(PHONE_NUM, "No phone number"), Toast.LENGTH_SHORT).show();
+                    showPhoneDialog();
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        return true;
     }
 }
