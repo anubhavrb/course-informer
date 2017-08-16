@@ -1,11 +1,14 @@
 package hu.ait.courseinformer;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +28,10 @@ import hu.ait.courseinformer.network.ParseAsyncTask;
 import hu.ait.courseinformer.network.ResultListener;
 
 public class MainActivity extends AppCompatActivity implements ResultListener {
+
+    private final String PREFS_NAME = "MyPrefs";
+    private final String FIRST_TIME = "FIRST_TIME";
+    private final String PHONE_NUM = "PHONE_NUM";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -52,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
         setSupportActionBar(toolbar);
 
         requestPermissions();
+
+        checkFirstTime();
     }
 
     @OnClick(R.id.btnRequest)
@@ -121,6 +130,36 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
         }
     }
 
+    private void checkFirstTime() {
+        SharedPreferences info = getSharedPreferences(PREFS_NAME, 0);
+        if (info.getBoolean(FIRST_TIME, true)) {
+            Toast.makeText(this, "First time!", Toast.LENGTH_SHORT).show();
+            showPhoneDialog();
+            info.edit().putBoolean(FIRST_TIME, false).commit();
+        }
+        else {
+            Toast.makeText(this, "Not the first time", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showPhoneDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        final EditText etNumber = new EditText(MainActivity.this);
+        builder.setTitle("Add Phone Number")
+                .setView(etNumber)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!TextUtils.isEmpty(etNumber.getText())) {
+                            SharedPreferences info = getSharedPreferences(PREFS_NAME, 0);
+                            info.edit().putString(PHONE_NUM, etNumber.getText().toString().trim())
+                                    .commit();
+                        }
+                    }
+                })
+                .show();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -138,6 +177,11 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
                 break;
 
             case R.id.add_number:
+                SharedPreferences info = getSharedPreferences(PREFS_NAME, 0);
+                if (info.contains(PHONE_NUM)) {
+                    Toast.makeText(this, info.getString(PHONE_NUM, "No phone number"), Toast.LENGTH_SHORT).show();
+                    showPhoneDialog();
+                }
                 break;
 
             default:
