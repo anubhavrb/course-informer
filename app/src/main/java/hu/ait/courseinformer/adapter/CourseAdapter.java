@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -45,9 +46,15 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         String name = courseList.get(position).getDep() + " " + courseList.get(position).getCrn();
         holder.tvName.setText(name);
+        holder.btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteCourse(position);
+            }
+        });
     }
 
     @Override
@@ -69,6 +76,16 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
         notifyItemInserted(courseList.size()-1);
     }
 
+    private void deleteCourse(int position) {
+        realmCourse.beginTransaction();
+        courseList.get(position).deleteFromRealm();
+        realmCourse.commitTransaction();
+
+        courseList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, courseList.size());
+    }
+
     public void deleteAll() {
 
         realmCourse.beginTransaction();
@@ -86,11 +103,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView tvName;
+        private ImageButton btnRemove;
 
         public ViewHolder(View courseView) {
             super(courseView);
 
             tvName = (TextView) courseView.findViewById(R.id.tvName);
+            btnRemove = (ImageButton) courseView.findViewById(R.id.btnRemove);
         }
     }
 }
