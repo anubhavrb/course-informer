@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
             tvInfo.setText("Retrieving...");
             String dep = etDep.getText().toString().toLowerCase().trim();
             String num = etNum.getText().toString().trim();
-            String URL = R.string.base_url + dep + R.string.rest_url;
+            String URL = getString(R.string.base_url) + dep + getString(R.string.rest_url);
             (new ParseAsyncTask(MainActivity.this)).execute(new String[]{URL, num});
         }
     }

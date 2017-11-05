@@ -45,7 +45,7 @@ public class ParseService extends Service {
                             String dep = course.getDep().toLowerCase().trim();
                             String crn = course.getCrn().trim();
 
-                            String URL = R.string.base_url + dep + R.string.rest_url;
+                            String URL = getString(R.string.base_url) + dep + getString(R.string.rest_url);
 
                             (new ParseAsyncSMSTask(ParseTimerThread.this)).execute(new String[]{URL, crn});
                         }
