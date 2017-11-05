@@ -5,4 +5,6 @@
     <string name="stop_service">Stop Service</string>
     <string name="enter_course_number">Enter course number</string>
     <string name="enter_department_name">Enter department name</string>
+    <string name="base_url">http://www.davidson.edu/offices/registrar/schedules-and-courses/spring-2018-courses/</string>
+    <string name="rest_url">-spring-2018-courses</string>
 </resources>
