@@ -111,9 +111,12 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
 
     private void requestPermissions() {
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) !=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS},
+        if ((ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) !=
+                PackageManager.PERMISSION_GRANTED) ||
+            (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) !=
+                PackageManager.PERMISSION_GRANTED)){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS,
+                    Manifest.permission.READ_PHONE_STATE},
                     101);
         }
     }
@@ -123,7 +126,8 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
         switch(requestCode) {
             case 101:
                 if (grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                        grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Permissions granted!", Toast.LENGTH_SHORT)
                             .show();
                 }
