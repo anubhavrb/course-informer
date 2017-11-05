@@ -39,10 +39,11 @@ public class ParseAsyncTask extends AsyncTask<String, Void, String> {
                     int rem = Integer.parseInt(row.select("td.remaining").text());
                     String title = row.select("td.title").text();
                     String section = row.select("td.section").text();
+                    String crn = row.select("td.creditNumber").text();
                     result += title;
                     if (!section.equals("0"))
                         result += " " + section;
-                    result += " - " + rem + " spots open!\n";
+                    result += " (CRN " + crn + ") - " + rem + " spots open!\n";
                 }
             }
             if (!match) {

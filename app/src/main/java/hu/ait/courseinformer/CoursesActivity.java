@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import hu.ait.courseinformer.adapter.CourseAdapter;
 
@@ -80,6 +81,9 @@ public class CoursesActivity extends AppCompatActivity {
                 adapter.deleteAll();
                 break;
 
+            case R.id.help:
+                Toast.makeText(this, "Enter dep name followed by CRN.\n Example: PSY 20258",
+                        Toast.LENGTH_LONG).show();
             default:
                 break;
         }
