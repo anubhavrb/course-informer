@@ -69,8 +69,7 @@ public class MainActivity extends AppCompatActivity implements ResultListener {
             tvInfo.setText("Retrieving...");
             String dep = etDep.getText().toString().toLowerCase().trim();
             String num = etNum.getText().toString().trim();
-            String URL = "http://www.davidson.edu/offices/registrar/schedules-and-courses/fall-2017-courses/"
-                        + dep + "-fall-2017-courses";
+            String URL = R.string.base_url + dep + R.string.rest_url;
             (new ParseAsyncTask(MainActivity.this)).execute(new String[]{URL, num});
         }
     }

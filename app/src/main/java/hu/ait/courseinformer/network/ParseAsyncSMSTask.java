@@ -1,8 +1,6 @@
 package hu.ait.courseinformer.network;
 
 import android.os.AsyncTask;
-import android.telephony.SmsManager;
-import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

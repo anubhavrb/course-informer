@@ -45,8 +45,8 @@ public class ParseService extends Service {
                             String dep = course.getDep().toLowerCase().trim();
                             String crn = course.getCrn().trim();
 
-                            String URL = "http://www.davidson.edu/offices/registrar/schedules-and-courses/fall-2017-courses/"
-                                    + dep + "-fall-2017-courses";
+                            String URL = R.string.base_url + dep + R.string.rest_url;
+
                             (new ParseAsyncSMSTask(ParseTimerThread.this)).execute(new String[]{URL, crn});
                         }
                     }
@@ -63,7 +63,6 @@ public class ParseService extends Service {
         @Override
         public void resultArrived(String result) {
             if (!result.equals("-1")) {
-                Log.d("LOG_TAG", "Inside resultArrived");
                 SharedPreferences info = getSharedPreferences(PREFS_NAME, 0);
                 String number = info.getString(PHONE_NUM, "");
 
